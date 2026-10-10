@@ -10,7 +10,8 @@ The purpose of this README is to provide additional architectural details of the
 - Vanilla JavaScript, without the use of a front-end framework such as ReactJS.
 - Deployed using Netlify.
 - Backend using two serverless functions *(See Section 3 in main report)*.
-- Database store via three JSONBin endpoints.
+- Database store via two JSONBin endpoints.
+- Uses SweetAlert2 for dialogue and confirmation boxes.
 
 ## Architecture
 - Heavy use made of individual objects dedicated to different areas of service (detention addition, detention removal, attendance, etc.)
@@ -59,39 +60,8 @@ The purpose of this README is to provide additional architectural details of the
       ...
     };
   ```
-
-
-
-## Notable Issues
-The Detention Tracker App is *not* perfect. Here are some of its notable issues:
-- The database infrastructure is not robust: JSONBin is a lightweight project with a small development team and outages are a possibility. As of October 2026, the app has experienced two notable outages that have disrupted admin work.
-- The authentication infrastructure is imperfect: While there are safeguarding measures in place, the application's data pathway is only lightly insulated from potential attacks. Fortunately, DDoS mitigation measures are enforced by Netlify.
-
-## Future Development
-Security of the data is very important to me. Given that the app handles information about minors, there are certain requirements that need to be fulfilled. Therefore, I'm currently in the planning process for an eventual system
-migration to Firebase. This will provide numerous advantages:
-
-- Enhanced data security with Firestore Rules
-- Industry-grade authentication systems and password protection
-- Reliable data storage - close to no outages year-long.
-- Realtime client-side updates. Will eliminate scale, locally cached copies of data.
-- Will introduce scalibity to the app!
-
+  
 ### Note on use of AI
 Certain areas of the codebase were developed with *the help* of artificial intelligence. Usage was limited to where assistance was genuinely needed to solve an issue, or to suggest
 ways to improve existing infrastructure. Under no circumstances was AI-generated code used in the codebase. All concepts derived from AI were tested rigorously before deployment.
 The design of this application's user interface, the codebase and the application's features are exclusively my work.
-
----
-
-## Bibliography
-
-Live Resources:
-- St. Colman's College Website: www.stcolmans.ie <br>
-- Live Detention Tracker Application: https://stcolmansdetention.netlify.app <br>
-
-Documentation:
-- Google Cloud API Documentation: https://docs.cloud.google.com/apis/docs/overview
-- JSONBin API Documentation: https://jsonbin.io/api-reference
-- [Google Cloud Object Concurrency Documentation](https://docs.cloud.google.com/gemini-enterprise-agent-platform/build/vector-search-2/data-objects/using-etags-for-concurrency-control)
-- Firestore Documentation: https://firebase.google.com/docs/firestore

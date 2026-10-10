@@ -3,7 +3,8 @@
 
 ---
 The Detention Tracker Application is a web service designed to record and keep track of detentions in a school environment. It is a deployed service actively used by nine administrators.
-The purpose of this README is to provide additional architectural details of the app's codebase.
+The purpose of this README is to provide additional architectural details of the app's codebase.<br>
+*The password is: ise2027*
 
 ---
 ## Tech Stack

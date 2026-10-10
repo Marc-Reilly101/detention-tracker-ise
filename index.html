@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>St. Colman's | Detention Book</title>
+    <link rel="stylesheet" href="style.css"/>
+    <link rel="icon" href="assets/crest.png"/>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <div id="passwordscreen" class="centered">
+            <img style="width: 250px; height: 250px;" src="assets/crest.png"/> </p>
+            <h1>St. Colman's College</h1>
+            <h2>Detention Book</h2>
+            <input type="password" class="textbox" style="height: 45px; width: 400px;" placeholder="Enter administrative password..." id="passwordscreen_passwordBox"/> </p>
+            <button class="button" onclick="logIn()">Submit</button> </p>
+        </div>
+        <div id="loadingscreen" class="centered hidden">
+            <img style="width: 250px; height: 250px;" src="assets/crest.png"/> </p>
+            <i>Loading...</i> </p>
+            <i>Fetching Data...</i> </p>
+        </div>
+        <div id="mainscreen" class="hidden">
+            <div class="header"><b>St. Colman's | Detention Book</b></div>
+            <!-- webcontent classes used to establish margin sizes, and element alignment -->
+            <div class="webcontent">
+                <button class="button" onclick="UI.goTo('addstudentscreen', 'mainscreen')">Add Student (+)</button>
+                <span class="lineBreak"></span>
+                <select id="mainscreen_yearFilter" class="selectionBox">
+                    <option>All Years</option>
+                    <option>First Year</option>
+                    <option>Second Year</option>
+                    <option>Third Year</option>
+                    <option>Transition Year</option>
+                    <option>Fifth Year</option>
+                    <option>Sixth Year</option>
+                </select>
+                <span class="lineBreak"></span>
+                <select id="mainscreen_timeFilter" class="selectionBox">
+                    <option>All</option>
+                    <option>Today</option>
+                    <option>Upcoming</option>
+                </select>
+                <span class="lineBreak"></span>
+                <div id="mainscreen_toolbar" style="float: right;">
+                    <b class="underline-hover" style="margin-right: 12px;" onclick="UI.goTo('recordscreen', 'mainscreen')">Records</b>
+                    <b class="underline-hover" style="margin-right: 12px;" onclick="UI.goTo('profilesearchscreen', 'mainscreen')">Profiles</b>
+                    <b class="underline-hover" style="margin-right: 12px;" onclick="attendanceFunctions.verifyDetentionToday()">Attendance</b>
+                </div> </p>
+                <b style="color: red;" class="underline-hover hidden" id="mainscreen_fridayDetentionNotice" onclick="UI.goTo('fridaydetentionsneededscreen', 'mainscreen')"></b> </p>
+                <hr/>
+                <u><b><i>Date Format: yyyy-mm-dd</i></b></u> </p>
+                <i id="mainscreen_emptyLabel" style="display: none;">Nothing here at the moment...</i> </p>
+                <div id="mainscreen_detentionsList"></div>
+            </div>
+        </div>
+        <div id="recordscreen" class="hidden">
+            <div class="header"><b class="underline-hover" onclick="UI.goTo('mainscreen', 'recordscreen')">Back</b></div>
+            <div class="webcontent">
+                <h2>Detention Records</h2>
+                <input type="text" class="textbox" placeholder="Name Filter..." id="recordscreen_nameFilter"/> <span class="lineBreak"></span>
+                <input type="date" class="textbox" id="recordscreen_dateFilter"/> </p>
+                <p>Leave field(s) blank for no filter.</p>
+                <hr/>
+                <u><b><i>Date Format: yyyy-mm-dd</i></b></u> </p>
+                <i id="recordscreen_emptyLabel" style="display: none;">Nothing here at the moment...</i> </p>
+                <div id="recordscreen_detentionsList"></div>
+            </div>
+        </div>
+        <div id="addstudentscreen" class="hidden">
+            <div class="header"><b class="underline-hover" onclick="UI.goTo('mainscreen', 'addstudentscreen')">Back</b></div>
+            <div class="webcontent centered">
+                <h2>Add Student to Detention</h2>
+                <p>Does Not Count (For rescheduled detentions) <input type="checkbox" id="addstudentscreen_countingCheckbox"/></p>
+                <div class="container">
+                    <b><u>Student Details:</u></b> </p>
+                    <input type="text" class="textbox" placeholder="Enter student name..." id="addstudentscreen_nameBox"/> </p>
+                    <select class="long-selectionBox" id="addstudentscreen_yearBox">
+                        <option>-- Select Year Group --</option>
+                        <option>First Year</option>
+                        <option>Second Year</option>
+                        <option>Third Year</option>
+                        <option>Transition Year</option>
+                        <option>Fifth Year</option>
+                        <option>Sixth Year</option>
+                    </select>
+                </div> </p>
+                <div class="container">
+                    <b><u>Detention Type:</u></b> </p>
+                    <p>
+                        Single Detention: <input type="radio" name="addstudentscreen_detentionType" id="addstudentscreen_singleDetentionRadio"/>
+                        <span class="lineBreak"></span>
+                        Double Detention: <input type="radio" name="addstudentscreen_detentionType" id="addstudentscreen_doubleDetentionRadio"/>
+                    </p>
+                    <p>Friday Detention: <input type="radio" name="addstudentscreen_detentionType" id="addstudentscreen_fridayDetentionRadio"/></p>
+                    <div id="addstudentscreen_singleDetentionConfig" class="hidden">
+                        <hr/>
+                        <b><i>Enter a valid date</i></b> </p>
+                        <input type="date" class="textbox" id="addstudentscreen_singleDetentionDateBox"/>
+                    </div>
+                    <div id="addstudentscreen_doubleDetentionConfig" class="hidden">
+                        <hr/>
+                        <b><i>Enter two valid dates</i></b> </p>
+                        <input type="date" class="textbox" id="addstudentscreen_doubleDetentionDateBoxOne"/> </p>
+                        <input type="date" class="textbox" id="addstudentscreen_doubleDetentionDateBoxTwo"/>
+                    </div>
+                    <div id="addstudentscreen_fridayDetentionConfig" class="hidden">
+                        <hr/>
+                        <b><i>Enter a valid date</i></b> </p>
+                        <input type="date" class="textbox" id="addstudentscreen_fridayDetentionDateBox"/>
+                    </div>
+                </div> </p>
+                <div class="container">
+                    <b><u>Detention Information:</u></b> </p>
+                    <select class="long-selectionBox" id="addstudentscreen_reasonBox">
+                        <option>Phone not in Pouch</option>
+                        <option>Disruptive Behavior</option>
+                        <option>Disrespectful to Teacher</option>
+                        <option>Fighting</option>
+                        <option>Repeated Failure to Complete Homework</option>
+                        <option>Late for Class</option>
+                        <option>Smoking / Vaping</option>
+                        <option>Truancy</option>
+                        <option>Other</option>
+                    </select> </p>
+                    <div id="addstudentscreen_customReasonConfig" class="hidden">
+                        <textarea id="addstudentscreen_customReasonBox" style="width: 480px; height: 360px;"></textarea>
+                    </div> </p>
+                    <select class="long-selectionBox" id="addstudentscreen_teacherBox">
+                        <option>-- Scheduled By --</option>
+                        <option>Other</option>
+                    </select> </p>
+                    <div id="addstudentscreen_otherTeacherConfig" class="hidden">
+                        <input type="text" class="textbox" placeholder="Enter full name..." id="addstudentscreen_otherTeacherBox"/>
+                    </div>
+                </div> </p>
+                <button class="button" onclick="entryAdditionFunctions.addDetentionEntry()">Submit</button>
+            </div>
+        </div>
+        <div id="viewentryscreen" class="hidden">
+            <div class="header"> <b class="underline-hover" onclick="viewEntryFunctions.exitEntryScreen()">Back</b> </div>
+            <div class="webcontent centered">
+                <h1 id="viewentryscreen_nameLabel"></h1>
+                <h3 id="viewentryscreen_dateLabel"></h3>
+                <hr/>
+                <p id="viewentryscreen_reasonLabel"></p>
+                <b><i id="viewentryscreen_entryDataLabel"></i></b> </p>
+                <b id="viewentryscreen_absentLabel" style="color: red;"></b> </p>
+                <b id="viewentryscreen_rescheduledLabel"></b> </p>
+                <span class="hidden" id="viewentryscreen_tagLabel"></span> </p>
+                <button class="button" onclick="entryAdditionFunctions.rescheduleDetention()">Reschedule</button>
+            </div>
+        </div>
+        <div id="profilesearchscreen" class="hidden">
+            <div class="header"> <b class="underline-hover" onclick="UI.goTo('mainscreen', 'profilesearchscreen')">Back</b> </div>
+            <div class="webcontent">
+                <h2>Student Profiles</h2>
+                <input type="search" class="textbox" style="height: 45px; width: 400px;" placeholder="Enter student..." id="profilesearchscreen_searchBox"/>
+                <span class="lineBreak"></span>
+                <button class="button" value="Search" onclick="profileFunctions.searchProfiles()">Search</button>
+                <hr/>
+                <div id="profilesearchscreen_profileList"></div>
+            </div>
+        </div>
+        <div id="viewprofilescreen" class="hidden">
+            <div class="header"> <b class="underline-hover" onclick="UI.goTo('profilesearchscreen', 'viewprofilescreen')">Back</b> </div>
+            <div class="webcontent centered">
+                <h2 id="viewprofilescreen_studentNameLabel"></h2>
+                <h3 id="viewprofilescreen_yearGroupLabel"></h3>
+                <hr/>
+                <b style="color: red;" id="viewprofilescreen_fridayDetentionNeededLabel"></b> </p>
+                <p id="viewprofilescreen_detentionsLabel"></p>
+                <p id="viewprofilescreen_fridayDetentionsLabel"></p>
+                <p id="viewprofilescreen_detentionsMissedLabel"></p>
+                <p id="viewprofilescreen_detentionsLateLabel"></p>
+                <hr/>
+                <div class="container" id="viewprofilescreen_incidentContainer" style="width: 600px;">
+                    <b><u>Incident Reports:</u></b> </p>
+                    <div id="viewprofilescreen_incidentReportList"></div>
+                </div>
+                <h3 id="viewprofilescreen_behaviorLabel"></h3> </p>
+            </div>
+        </div>
+        <div id="attendancescreen" class="hidden">
+            <div class="header"> <b class="underline-hover" onclick="UI.goTo('mainscreen', 'attendancescreen')">Back</b> </div>
+            <div class="webcontent">
+                <h2>Today's Attendance</h2>
+                <i id="attendancescreen_dateLabel"></i> </p>
+                <hr/>
+                <div id="attendancescreen_studentList"></div>
+                <button class="button" onclick="attendanceFunctions.submitAttendance()">Submit</button>
+            </div>
+        </div>
+        <div id="fridaydetentionsneededscreen" class="hidden">
+            <div class="header"> <b class="underline-hover" onclick="UI.goTo('mainscreen', 'fridaydetentionsneededscreen')">Back</b> </div>
+            <div class="webcontent">
+                <h2>Schedule Friday Detentions</h2>
+                <hr/>
+                <div id="fridaydetentionsneededscreen_studentList"></div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="app.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

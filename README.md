@@ -6,6 +6,9 @@ The Detention Tracker Application is a web service designed to record and keep t
 The purpose of this README is to provide additional architectural details of the app's codebase.<br>
 *The password is: ise2027*
 
+### Note on Repository
+The application was not developed alongside git. This repository contains no commit history of the codebase's development, and was created for the purpose of showcasing the codebase.
+
 ---
 ## Tech Stack
 - Vanilla JavaScript, without the use of a front-end framework such as ReactJS.
